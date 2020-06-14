@@ -104,7 +104,7 @@
                     var images = [buttom1,buttom2,buttom3];
 
                     buttoms[i].show(images[i]);
-                    buttoms[i].xoff+=0.1;
+                    buttoms[i].xoff+=0.01;
                     buttoms[i].move();
                     buttoms[i].sound(scenes[0].posy);
                 }
@@ -401,10 +401,10 @@
                 
                 let n = noise(this.xoff);
                 if(n>0.5){
-                this.x += n/4;
+                this.x += n/10;
                 }
                 else{
-                    this.x -= n/4; 
+                    this.x -= n/10; 
                 }
                }
                 clicked(num,numS){

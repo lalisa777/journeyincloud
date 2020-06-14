@@ -6,3 +6,6 @@ There are several different scenes in this game, you can jump from one scene to 
 So the game is not like the typical game because you will not win or lose. It has no goals. What I want you to do is just you are willing to spend time in this music interaction, enter and stay in the small world I built to explore different audio and visual possibilities by moving the clouds.
 
 I hope JourneyinCloud can give you a good visual and audio enjoyment and feel relaxing. This is what I want to achieve no matter who you are, just simply play in this music world and feel enjoyment and satisfaction!
+
+
+Let`s begin the journey at https://lalisa777.github.io/journeyincloud/journeyincloud/index

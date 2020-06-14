@@ -1,0 +1,595 @@
+<html>
+    <head>
+        <title>Jounery in Cloud</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+        <style>
+                body{ margin: 0; }
+                canvas { width: 100%; height: 100%; };
+            </style>
+    </head>
+
+    <body>
+        <script>
+            //let millisecond = millis();
+            const Y_AXIS = 1;
+            const X_AXIS = 2;
+            var c2 = 94;
+            var sep = 3;
+            let speed = 10000;
+            let buttoms = [];
+            let scenes = [];
+            let s1s1,s1s2,s1s3,s2s1,s2s2,s2s3,s3s1,s3s2,s3s3,s4s1,s4s2,s4s3;
+            var c1 = 34;
+            var v1 = 0;
+            var v2 = 0.9;
+            var v3 = 0;
+            var v4 = 0;
+            var v5 = 0.9;
+            var v6 = 0;
+            var v7 = 0;
+            var v8 = 0;
+            var v9 = 0.9;
+            var v10 = 0;
+            var v11 = 0.9;
+            var v12 = 0;
+            var moonSize = 600;
+            var arc1 = 0.1;
+            var tran = 50;
+            var yoff = 0;
+            var wave = 100;
+            var h = 380;
+            var sunH = 0.75;
+            let ringSize = 0;
+            var mH = 0;
+            let B = 0;
+            let move = 0;
+
+            function preload() {
+                buttom1 = loadImage('img/buttom1.png');
+                buttom2 = loadImage('img/buttom2.png');
+                buttom3 = loadImage('img/buttom3.png');
+                soundFormats('mp3');
+                s1s1 = loadSound('sound/s1s1');
+                s1s2 = loadSound('sound/s1s2');
+                s1s3 = loadSound('sound/s1s3');
+                s2s1 = loadSound('sound/s2s1');
+                s2s2 = loadSound('sound/s2s2');
+                s2s3 = loadSound('sound/s2s3');
+                s3s1 = loadSound('sound/s3s1');
+                s3s2 = loadSound('sound/s3s2');
+                s3s3 = loadSound('sound/s3s3');
+                s4s1 = loadSound('sound/s4s1');
+                s4s2 = loadSound('sound/s4s2');
+                s4s3 = loadSound('sound/s4s3');
+               }
+            
+           function setup() {
+               createCanvas(windowWidth, windowHeight);
+               //pixelDensity(1);
+               rs = random(10000);
+
+               let b1 = new Buttom(300,500);
+               buttoms.push(b1);
+               let b2 = new Buttom(700,300);
+               buttoms.push(b2);
+               let b3 = new Buttom(1200,500);
+               buttoms.push(b3);
+
+               let s1 = new Scene(0,0);
+               scenes.push(s1);
+               let s2 = new Scene(0,-height);
+               scenes.push(s2);
+               let s3 = new Scene(0,-height*2);
+               scenes.push(s3);
+               let s4 = new Scene(0,-height*3);
+               scenes.push(s4);             
+            }
+            function draw() {
+                //background(160,180,195);
+
+                scenes[0].scene1(speed,c1,c2,sep);
+                scenes[1].scene2(moonSize,arc1,tran);
+                scenes[2].scene3(wave,h,sunH);
+                scenes[3].scene4(ringSize,mH,B);
+                console.log(scenes[0].posy);
+                          
+               for(let i = 0; i < buttoms.length; i++){
+                    var images = [buttom1,buttom2,buttom3];
+
+                    buttoms[i].show(images[i]);
+                    buttoms[i].xoff+=0.01;
+                    buttoms[i].move();
+                    buttoms[i].sound(scenes[0].posy);
+                }
+            
+
+               
+               //noLoop();  
+               
+                                   
+            }
+            function mouseDragged() {
+                for(let i = 0; i < buttoms.length; i++){
+                    
+                    buttoms[i].clicked(i,scenes[0].posy);
+                }
+            }
+            function setGradient(x, y, w, h, c1, c2, axis) {
+                noFill();
+
+                if (axis === Y_AXIS) {
+                    // 从上到下的渐变
+                    for (let i = y; i <= y + h; i++) {
+                    let inter = map(i, y, y + h, 0, 1);
+                    let c = lerpColor(c1, c2, inter);
+                    stroke(c);
+                    line(x, i, x + w, i);
+                    }
+                } else if (axis === X_AXIS) {
+                    // 从左到右的渐变
+                    for (let i = x; i <= x + w; i++) {
+                    let inter = map(i, x, x + w, 0, 1);
+                    let c = lerpColor(c1, c2, inter);
+                    stroke(c);
+                    line(i, y, i, y + h);
+                    }
+                }
+                }
+
+            function keyTyped() {
+                if (key === 'a') {
+                    s1s1.loop();
+                    s1s2.loop();
+                    s1s3.loop();
+                    s2s1.loop();
+                    s2s2.loop();
+                    s2s3.loop();
+                    s3s1.loop();
+                    s3s2.loop();
+                    s3s3.loop();
+                    s4s1.loop();
+                    s4s2.loop();
+                    s4s3.loop();
+                } 
+                if (key === 's'){
+
+                    let moveU  = 0;
+                    
+                    setInterval(() => {
+                        
+                        if(moveU < windowHeight/2.52){
+                        scenes.forEach(scene => {
+                        
+                        scene.posy+=10;
+                        moveU+=1;
+                       
+                    });
+                }
+                        
+                    }, 100);
+                
+                }
+                if (key === 'x'){
+
+                let moveD  = 0;
+
+                setInterval(() => {
+                    
+                    if(moveD < windowHeight/2.52){
+                    scenes.forEach(scene => {
+                    
+                    scene.posy-=10;
+                    moveD+=1;
+                
+                });
+                }
+                    
+                }, 100);
+
+                }
+                }
+
+            class Scene{
+                constructor(x,y){
+                    this.posx = x;
+                    this.posy = y;
+                }
+                scene1(speed,c1,c2,sep){
+                    push();
+                    translate(this.posx,this.posy);
+                    fill(237,34,94);
+                    rect(0,0,width,height);
+                    for(let y = 0; y < height; y += height / 10)  {
+                        noStroke();
+                        fill(237-0.2*y, c1, c2);
+                        beginShape();
+                        for (let x = 0; x <= width; x+=3) {
+                            let yy = y + map(noise(rs+y, x / 400, frameCount / speed), 0, 1, -height / sep, height / sep);
+                            vertex(x, yy);
+                        }
+                        vertex(width, height);
+                        vertex(0, height);
+                        endShape();              
+                    }
+                    pop();
+            }
+
+            scene2(moonSize,arc1,tran){
+                push();
+                translate(this.posx,this.posy);
+
+                fill(224, 238, 251);
+                rect(0,0,width,height);
+
+               
+                let moonX = width/2;
+                let moonY = height*0.45;
+                applyMatrix();
+                noStroke();
+                fill(242, 200, 100, 30);
+                ellipseMode(RADIUS);        
+                var moonRadius = moonSize/ 2;
+                var moonArcLength = PI;
+                var moonArcCount = 30;
+                for (var i = 0; i < moonArcCount; i++) {
+                    var arcAngle =  i/5 * moonArcLength;
+                    var arcLength = i/35* moonArcLength;
+                    arc(moonX, moonY, moonRadius, moonRadius, arcAngle - arcLength / 2, arcAngle + arcLength / 2, CHORD);
+                }
+
+                noFill();
+                stroke(242, 200, 100,130);
+                strokeWeight(10);
+                arc(moonX,moonY,moonRadius+50,moonRadius+50,arc1*PI,PI*(arc1+0.3));
+                arc(moonX,moonY,moonRadius+50,moonRadius+50,PI*(arc1+1),PI*(arc1+1.2));
+
+                noStroke();
+                fill(255, tran);
+                ellipseMode(RADIUS);
+                              
+                var circleCount = 30;
+                for (var i = 0; i < circleCount; i++) {
+                    var circleRadius =100;
+                    var circleX = 200*sin(2*i) ;
+                    var circleY = 30*cos(i) ;
+                    
+                    ellipse(circleX+width/2, circleY+height*0.8, circleRadius, circleRadius-20);
+                }
+                resetMatrix();
+                pop();
+            }
+
+            scene3(wave,h,sunH){
+                push();
+                    translate(this.posx,this.posy);
+                    fill(160,180,195)
+                    rect(0,0,width,height);         
+
+                    let j=0;
+                    let num=26;
+                    let s = height/num;
+                    let theta  = 0;
+                    fill('rgb(243, 211, 137)');
+                    noStroke();
+                    ellipse(width/2,sunH*height,400, 400);
+                    j=0;
+                    for (let y = 2*s; y<height-2*s+1; y += s) {
+                        let sw = map(sin(theta+(TWO_PI/num*j)), -1, 1, 1.5, 12);
+                        let edge = 2*s;
+                        stroke(160,180,195);
+                        strokeWeight(sw/2);
+                        line(edge, y, width-edge, y);
+                        j++;
+                    }
+                    theta += .0523;                   
+                    
+                    for(let y = h; y <h+10; y =y+0.8)  {
+                        stroke(255, 50);
+	                    fill(10,65,90,50);
+                        beginShape();
+                        for (let x = 0; x <= width; x+=3) {
+                            let yy = y + map(noise(rs+y, x / 400, frameCount /wave), 0, 1, -height /15, height/15);
+                            vertex(x, yy);
+                        }
+                    vertex(width, height);
+                    vertex(0, height);
+                    endShape();  
+                    }                       
+                pop();
+                }
+
+                scene4(ringSize,mH,B){
+                    push();
+                    translate(this.posx,this.posy);
+
+                    fill('rgb(187, 169, 155)');
+                    rect(0,0,width,height);  
+                    
+                    let ringColor = 'rgb(187, 169, 155)';
+                    if (ringSize < 10) {
+                        ringColor = 'rgb(187, 169, 155)';
+                    } else {
+                        ringColor = 255;
+                    }
+
+                    noFill();
+                    stroke(ringColor);
+                    strokeWeight(10);
+                    ellipse(width*0.2, height*0.15, ringSize, ringSize);
+                    ellipse(width*0.4, height*0.25, ringSize, ringSize);                    
+                    ellipse(width*0.8, height*0.35, ringSize+100, ringSize+100);
+
+                   
+
+
+                    noStroke();
+                    //红2
+                    fill(235, 204, 178+B);
+                    triangle(width*0.15, height*0.5, width*0.09, height, -width*0.1, height);
+                    fill(216, 158, 110+B);
+                    triangle(width*0.15, height*0.5, width*0.09,height, width*0.45, height);
+
+                    //红1
+                    fill(236, 187, 126+B);
+                    triangle(width*0.05, height*0.56, 0, height, -width*0.2, height);
+                    fill(204, 126, 30+B);
+                    triangle(width*0.05, height*0.56, 0, height, width*0.35, height);
+
+                    //红3
+                    fill(235, 204, 178+B);
+                    triangle(width*0.8, height*0.7, width*0.8, height, width*0.75, height);
+                    fill(216, 158, 110+B);
+                    triangle(width*0.8, height*0.7, width*0.8, height, width*0.85, height);
+
+                    //大黄
+                    fill(229, 225, 163+B);
+                    triangle(width*0.4, height*0.15+mH, width*0.25, height, -111, height);
+                    fill(214, 192, 123+B);
+                    triangle(width*0.4, height*0.15+mH, width*0.25, height, width*0.9, height);
+
+                    //大红
+                    fill(230, 187, 85+B);
+                    triangle(width*0.3, height*0.5, width*0.25, height, width*0.15, height);
+                    fill(195, 145, 29+B);
+                    triangle(width*0.3, height*0.5, width*0.25, height, width*0.45, height);
+
+                    //大蓝
+                    fill(235, 204, 178+B);
+                    triangle(width*0.15, height*0.75, width*0.1, height, - width*0.1, height);
+                    fill(216, 158, 110+B);
+                    triangle(width*0.15, height*0.75, width*0.4, height, width*0.1, height);
+
+                    //大绿
+                    fill(236, 187, 126+B);
+                    triangle(width*0.5, height*0.7, width*0.45,height, width*0.35, height);
+                    fill(204, 126, 30+B);
+                    triangle(width*0.5, height*0.7, width*0.65, height, width*0.45, height);
+
+                    pop();
+                }
+                
+                
+            }
+
+            class Buttom{
+                constructor(tempX,tempY){
+                    this.x = tempX;
+                    this.y = tempY;
+                    this.xoff = random(100);
+                }
+                show(img){
+                    imageMode(CENTER);
+                    
+                    image(img, this.x,this.y,img.width,img.height);
+                    
+               }
+
+               move(){
+                
+                let n = noise(this.xoff);
+                if(n>0.5){
+                this.x += n/4;
+                }
+                else{
+                    this.x -= n/4; 
+                }
+               }
+                clicked(num,numS){
+                    let d = dist(mouseX,mouseY,this.x,this.y);
+                        if(numS == 0){
+                                if(d<buttom1.width){
+                                    if(mouseY>300&&mouseY<500){
+                                        this.y = mouseY;                    
+                                    }
+                                    if(num == 0){
+                                        s1s1.setVolume(v1);
+                                        speed = map(this.y,500,300,1000,300);
+                                        v1 = map(this.y,300,500,0.9,0.1);
+                                    }
+                                    if(num == 1){
+                                        s1s2.setVolume(v2);
+                                        sep = map(this.y,500,300,6,3); 
+                                        v2 = map(this.y,300,500,0.9,0.1);
+                                    }
+                                    if(num == 2){
+                                        s1s3.setVolume(v3);
+                                        c1  = map(this.y,500,300,34,10);
+                                        c2  = map(this.y,500,300,94,154);
+                                        v3 = map(this.y,300,500,0.9,0.1);
+                                    }
+                                }
+                        }
+                        if(numS == 820){
+                                if(d<buttom1.width){
+                                    if(mouseY>300&&mouseY<500){
+                                        this.y = mouseY;                    
+                                    }
+                                    if(num == 0){
+                                        s2s1.setVolume(v4);
+                                        moonSize = map(this.y,300,500,550,600);
+                                        v4 = map(this.y,300,500,0.5,0.1);
+                                    }
+                                    if(num == 1){
+                                        s2s2.setVolume(v5);
+                                        arc1 = map(this.y,300,500,0.1,3);
+                                        v5 = map(this.y,300,500,0.9,0.1);
+                                    }
+                                    if(num == 2){
+                                        s2s3.setVolume(v6);
+                                        tran = map(this.y,300,500,0,50);
+                                        v6 = map(this.y,300,500,0.5,0.1);
+                                    }
+                                }
+                        }       
+                        if(numS == 1640){
+                                if(d<buttom1.width){
+                                    if(mouseY>300&&mouseY<500){
+                                        this.y = mouseY;                    
+                                    }
+                                    if(num == 0){
+                                        s3s1.setVolume(v7);
+                                        h = map(this.y,300,500,600,380);
+                                        v7 = map(this.y,300,500,0.5,0.1);
+                                    }
+                                    if(num == 1){
+                                        s3s2.setVolume(v8);
+                                        wave = map(this.y,500,300,1000,100);
+                                        v8 = map(this.y,300,500,0.9,0.1);
+                                    }
+                                    if(num == 2){
+                                        s3s3.setVolume(v9);
+                                        sunH = map(this.y,300,500,0.4,0.75);
+                                        v9 = map(this.y,300,500,0.5,0.1);
+                                    }
+                                }
+                        }
+                        if(numS == 2460){
+                                if(d<buttom1.width){
+                                    if(mouseY>300&&mouseY<500){
+                                        this.y = mouseY;                    
+                                    }
+                                    if(num == 0){
+                                        s4s1.setVolume(v10);
+                                        ringSize = map(this.y,300,500,500,0);
+                                        v10 = map(this.y,300,500,0.5,0.1);
+                                    }
+                                    if(num == 1){
+                                        s4s2.setVolume(v11);
+                                        mH = map(this.y,500,300,100,0);
+                                        v11 = map(this.y,300,500,0.9,0.1);
+                                    }
+                                    if(num == 2){
+                                        s4s3.setVolume(v12);
+                                        B = map(this.y,300,500,50,0);
+                                        v12 = map(this.y,300,500,0.5,0.1);
+                                    }
+                                }
+                        }       
+                }
+                sound(numSS){
+                    if(numSS == 0){  
+                        s1s1.setVolume(v1);
+                        s1s2.setVolume(v2);
+                        s1s3.setVolume(v3);                     
+                        s2s1.setVolume(0);
+                        s2s2.setVolume(0);
+                        s2s3.setVolume(0);
+                        s3s1.setVolume(0);
+                        s3s2.setVolume(0);
+                        s3s3.setVolume(0);
+                        s4s1.setVolume(0);
+                        s4s2.setVolume(0);
+                        s4s3.setVolume(0);
+                    }
+                    if(numSS> 10&&numSS<800){
+                        let vv1 = map(numSS,10,800,v1,0);
+                        let vv2 = map(numSS,10,800,v2,0);
+                        let vv3 = map(numSS,10,800,v3,0);
+                        let vv4 = map(numSS,10,800,0,v4);
+                        let vv5 = map(numSS,10,800,0,v5);
+                        let vv6 = map(numSS,10,800,0,v6);
+                        s1s1.setVolume(vv1);
+                        s1s2.setVolume(vv2);
+                        s1s3.setVolume(vv3);                     
+                        s2s1.setVolume(vv4);
+                        s2s2.setVolume(vv5);
+                        s2s3.setVolume(vv6);
+                    }
+                    if(numSS == 820){
+                    s1s1.setVolume(0);
+                    s1s2.setVolume(0);
+                    s1s3.setVolume(0);
+                    s2s1.setVolume(v4);
+                    s2s2.setVolume(v5);
+                    s2s3.setVolume(v6);
+                    s3s1.setVolume(0);
+                    s3s2.setVolume(0);
+                    s3s3.setVolume(0);
+                    s4s1.setVolume(0);
+                    s4s2.setVolume(0);
+                    s4s3.setVolume(0);
+                    
+                }
+                if(numSS> 830&&numSS<1630){
+                        let vv7 = map(numSS,10,800,v7,0);
+                        let vv8 = map(numSS,10,800,v8,0);
+                        let vv9 = map(numSS,10,800,v9,0);
+                        let vv4 = map(numSS,10,800,0,v4);
+                        let vv5 = map(numSS,10,800,0,v5);
+                        let vv6 = map(numSS,10,800,0,v6);
+                        s3s1.setVolume(vv7);
+                        s3s2.setVolume(vv8);
+                        s3s3.setVolume(vv9);                     
+                        s2s1.setVolume(vv4);
+                        s2s2.setVolume(vv5);
+                        s2s3.setVolume(vv6);
+                    }
+                    if(numSS == 1640){
+                    s1s1.setVolume(0);
+                    s1s2.setVolume(0);
+                    s1s3.setVolume(0);
+                    s2s1.setVolume(0);
+                    s2s2.setVolume(0);
+                    s2s3.setVolume(0);
+                    s3s1.setVolume(v7);
+                    s3s2.setVolume(v8);
+                    s3s3.setVolume(v9);
+                    s4s1.setVolume(0);
+                    s4s2.setVolume(0);
+                    s4s3.setVolume(0);
+        }
+        if(numSS> 1650&&numSS<2450){
+                        let vv10 = map(numSS,10,800,v10,0);
+                        let vv11 = map(numSS,10,800,v11,0);
+                        let vv12 = map(numSS,10,800,v12,0);
+                        let vv7 = map(numSS,10,800,0,v7);
+                        let vv8 = map(numSS,10,800,0,v8);
+                        let vv9 = map(numSS,10,800,0,v9);
+                        s3s1.setVolume(vv7);
+                        s3s2.setVolume(vv8);
+                        s3s3.setVolume(vv9);                     
+                        s2s1.setVolume(vv10);
+                        s2s2.setVolume(vv11);
+                        s2s3.setVolume(vv12);
+                    }
+                    if(numSS == 2460){
+                    s1s1.setVolume(0);
+                    s1s2.setVolume(0);
+                    s1s3.setVolume(0);
+                    s2s1.setVolume(0);
+                    s2s2.setVolume(0);
+                    s2s3.setVolume(0);
+                    s3s1.setVolume(0);
+                    s3s2.setVolume(0);
+                    s3s3.setVolume(0);
+                    s4s1.setVolume(v10);
+                    s4s2.setVolume(v11);
+                    s4s3.setVolume(v12);
+                    }
+    }
+            }
+        </script>
+    </body>
+
+</html>
